@@ -90,7 +90,7 @@ const mapStateToProps = (state) => {
     return {
         focused: state.getIn(['header','focused']),
         list: state.getIn(['header', 'list']),
-        page: state.getIn(['header', 'page']),
+        page: state.getIn(['header', 'page'])
     }
 }
 const mapDispatchToProps = (dispatch) => {
