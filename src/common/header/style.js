@@ -114,6 +114,7 @@ export const Addition = styled.div`
     right: 0;
     top: 0;
     height: 56px;
+    padding-right: 200px
 `
 export const Button = styled.div`
     float: right;
