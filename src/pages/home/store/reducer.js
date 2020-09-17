@@ -1,22 +1,34 @@
 import {
   fromJS
 } from 'immutable'
+import * as constants from './constants'
+
 const defaultState = fromJS({
-  topicList: [{
-    id: 1,
-    title: '社会热点',
-    imgUrl: 'https://upload.jianshu.io/users/upload_avatars/9988193/fc26c109-1ae6-4327-a298-2def343e9cd8.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96/format/webp'
-  },{
-    id: 2,
-    title: '手绘',
-    imgUrl: 'https://upload.jianshu.io/users/upload_avatars/9988193/fc26c109-1ae6-4327-a298-2def343e9cd8.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96/format/webp'
-  }],
-  articleList: []
+  topicList: [],
+  articleList: [],
+  recommendList: [],
+  articlePage: 1,
+  showScroll: false
 });
 
 export default (state = defaultState, action) => {
   // immutable的set方法会结合之前的immutable对象的值和设置的值，返回一个全新的对象
   switch (action.type) {
+    case constants.CHANGE_HOME_DATA:
+    return  state.merge({
+      topicList: fromJS(action.topicList),
+      articleList: fromJS(action.articleList),
+      recommendList: fromJS(action.recommendList)
+    });
+    case constants.ADD_ARTICLE_LIST:
+    // return  state.set('articleList', state.get('articleList').concat(action.list))
+    return state.merge({
+      articleList: state.get('articleList').concat(action.list),
+      articlePage: action.nextPage
+    });
+    case constants.TOGGLE_SCROLL_SHOW:
+    // return  state.set('articleList', state.get('articleList').concat(action.list))
+    return state.set('showScroll', action.show)
     default:
       return state
   }

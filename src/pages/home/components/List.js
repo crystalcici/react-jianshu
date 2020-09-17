@@ -1,22 +1,43 @@
 import React, { Component } from 'react'
-import { ListItem, ListInfo } from '../style'
+import { ListItem, ListInfo, LoadMore } from '../style'
+import { connect } from 'react-redux'
+import { actionCreators } from '../store'
+
 class List extends  Component {
     render() {
+      const { list, getMoreList, page } = this.props;
         return (
             <div>
-              <ListItem>
-              <img className='pic' alt='' src='https://upload.jianshu.io/users/upload_avatars/9988193/fc26c109-1ae6-4327-a298-2def343e9cd8.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96/format/webp' />
-              <ListInfo>
-                <h3 className='title'>
-                无性婚姻能长久吗
-                </h3>
-                <p className='desc'>
-                我内心是一个特别保守的人，打这个题目之时都考虑了好久，因为觉得这个话题还是太敏感了。 刚开始不敢写这方面的话题，觉得太难以启齿了，于是写之前还特...
-                </p>
-              </ListInfo>
-            </ListItem>
+              {
+                list.map((item, index) => {
+                  return (
+                    <ListItem key={index}>
+                      <img className='pic' alt='' src={item.get('imgUrl')} />
+                      <ListInfo>
+                        <h3 className='title'>
+                        {item.get('title')}
+                        </h3>
+                        <p className='desc'>
+                        {item.get('desc')}
+                        </p>
+                      </ListInfo>
+                    </ListItem>
+                  )
+                })
+              }
+              <LoadMore onClick={() => getMoreList(page)}>更多内容</LoadMore>
             </div>
         )
     }
 }
-export default List;
+const mapState = (state) => ({
+  list: state.getIn(['home', 'articleList']),
+  page: state.getIn(['home', 'articlePage'])
+})
+
+const mapDispatch = (dispatch) => ({
+  getMoreList(page) {
+    dispatch(actionCreators.getMoreList(page))
+  }
+})
+export default connect(mapState, mapDispatch)(List);
